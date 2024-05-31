@@ -1,3 +1,8 @@
+# FROM centos:7
+# RUN yum -y update && yum clean all && \
+#     yum install -y bash-completion  \
+#     gcc g++ make mysql mysql-devel mysql-server pcre-devel zlib-devel git
+
 FROM ubuntu:18.04
 ENV DEBIAN_FRONTEND noninteractive
 RUN apt-get update && \
@@ -22,12 +27,11 @@ RUN apt-get -y install default-libmysqlclient-dev
 RUN apt update && apt -y upgrade
 
 # ---- File Emulador ---- #
-RUN mkdir emulador
+RUN mkdir rathena
 # COPY entrypoint.sh ../emulador
-WORKDIR /emulador
+WORKDIR /rathena
 # RUN dos2unix -f entrypoint.sh
 # RUN chmod a+x entrypoint.sh
-# RUN ls
 
 EXPOSE 5121 6121 6900
 # CMD ["bash"]

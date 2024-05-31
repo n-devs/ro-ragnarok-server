@@ -8,11 +8,11 @@ services:
     container_name: ro-ragnarok-serve
     restart: always
     tty: true
-    working_dir: /emulador
+    working_dir: /rathena
     # SEMPRE QUE REINICIAR O CONTAINER IRAR BUIDAR O EMULADOR  
     volumes:
       # LEMBRAR SUBISTITUIR O NOME <EMULADOR> PARA A PASTE DO SEU SERVER
-      - ./serve/emulador:/emulador
+      - ./serve/rathena:/rathena
     # entrypoint: ./entrypoint.sh
     # TESTAR UM HEXED
     # command: >
@@ -42,12 +42,46 @@ services:
       # - ./db/log:/var/log/mysql
     environment:
       - MYSQL_DATABASE=ragnarok
-      - MYSQL_ROOT_PASSWORD=baE*EXzwx@6$*
+      - MYSQL_ROOT_PASSWORD=R00t+
       - MYSQL_USER=ragnarok
-      - MYSQL_PASSWORD=h@9bSss+GKj4p
+      - MYSQL_PASSWORD=ragnarok
     networks:
       - ragnarok-app-network
 
+  # RoBrawser
+  client:
+    build: client
+    container_name: ro-ragnarok-client
+    restart: always
+    tty: true
+    working_dir: /rathena
+    volumes:
+      - ./client/game:/game
+    command: >
+      bash -c live-server ./ --port=8080
+    ports:
+      - "8080:8080"
+    networks:
+      - ragnarok-app-network
+
+
+  wsproxy:
+    # image: node:18
+    build: wsproxy
+    container_name: ro-browser-wsproxy
+    restart: always
+    tty: true
+    # command: >
+    #   bash -c wsproxy -a 127.0.0.1:6900,127.0.0.1:6121,127.0.0.1:5121
+    command: >
+      bash -c wsproxy -a serve:6900,serve:6121,serve:5121
+    ports:
+      - "5999:5999"
+    networks:
+      - ragnarok-app-network
+    depends_on:
+      - serve
+      - app
 
   phpmyadmin:
     image: phpmyadmin
@@ -60,7 +94,7 @@ services:
       - PMA_ARBITRARY:1
       - PMA_HOST:db
       - MYSQL_USERNAME:ragnarok
-      - MYSQL_ROOT_PASSWORD:h@9bSss+GKj4p
+      - MYSQL_ROOT_PASSWORD:ragnarok
     depends_on: 
       - db
     networks:
