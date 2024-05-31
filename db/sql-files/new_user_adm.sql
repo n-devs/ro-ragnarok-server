@@ -10,9 +10,9 @@ INSERT INTO
 VALUES
     (
         '2000000',
-        'dev',
-        '!6E2e70736b',
+        'adm',
+        'adm',
         'M',
-        'n.devs260340@gmail.com',
+        'adm@developer.com',
         '99'
     )
