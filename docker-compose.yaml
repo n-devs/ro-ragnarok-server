@@ -81,7 +81,7 @@ services:
       - ragnarok-app-network
     depends_on:
       - serve
-      - app
+      - client
 
   phpmyadmin:
     image: phpmyadmin
