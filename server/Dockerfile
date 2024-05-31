@@ -23,10 +23,10 @@ RUN apt update && apt -y upgrade
 
 # ---- File Emulador ---- #
 RUN mkdir emulador
-# COPY entrypoint.sh ../emulador
+COPY entrypoint.sh ../emulador
 WORKDIR /emulador
-# RUN dos2unix -f entrypoint.sh
-# RUN chmod a+x entrypoint.sh
+RUN dos2unix -f entrypoint.sh
+RUN chmod a+x entrypoint.sh
 
 EXPOSE 5121 6121 6900
 # CMD ["bash"]
