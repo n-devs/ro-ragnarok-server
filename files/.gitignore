@@ -1,0 +1,9 @@
+data/*
+resources/*.grf
+AI/*
+BGM/*
+EasyAntiCheat
+Navigationdata
+PatchClient
+skin
+System/*

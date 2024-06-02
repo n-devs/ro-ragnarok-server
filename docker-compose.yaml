@@ -48,22 +48,30 @@ services:
     networks:
       - ragnarok-app-network
 
-  # RoBrawser
-  client:
-    build: client
-    container_name: ro-ragnarok-client
+  files:
+    build: files
+    container_name: ro-ragnarok-files
     restart: always
     tty: true
-    working_dir: /rathena
+    working_dir: /files
     volumes:
-      - ./client/game:/game
-    command: >
-      bash -c live-server ./ --port=8080
+      - ./files:/files
+    # command: npm i && npm start
     ports:
-      - "8080:8080"
+      - "5737:5737"
     networks:
       - ragnarok-app-network
 
+  ip:
+    build: ip
+    container_name: update-public-ip
+    restart: always
+    tty: true
+    working_dir: /public-ip
+    volumes:
+      - ./ip:/public-ip
+    networks:
+      - ragnarok-app-network
 
   wsproxy:
     # image: node:18
@@ -81,7 +89,8 @@ services:
       - ragnarok-app-network
     depends_on:
       - serve
-      - client
+      - game
+      - files
 
   phpmyadmin:
     image: phpmyadmin
@@ -89,7 +98,7 @@ services:
     restart: always
     ports:
       # 8080 is the host port and 80 is the docker port
-      - 9000:80
+      - "9000:80"
     environment:
       - PMA_ARBITRARY:1
       - PMA_HOST:db
@@ -102,4 +111,4 @@ services:
                         
 networks:
   ragnarok-app-network:
-    driver: bridge
+    driver: host
